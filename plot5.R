@@ -13,5 +13,12 @@ baltmv<-baltimore[(baltimore$SCC %in% vehicles$SCC),]
 install.packages("reshape")
 library(reshape)
 ## sort and sound for vehicle emissions ##
-meltbaltmv<-melt(baltmv,id.vars=c("year"),id.measure="Emissions")
-castbaltmv<-cast(meltbalmv,year~variable,sum)
+meltbaltmv<-melt(baltmv,id.vars="year",measure.vars="Emissions")
+castbaltmv<-cast(meltbaltmv,year~variable,sum)
+## plot  ##
+png(file="plot5.png")
+plot(castbaltmv$year,castbaltmv$Emissions,main="Vehicle Emissions Baltimore with Regression line",xlab="year",ylab="Emissions (tons)")
+a<-lm(castbaltmv$Emissions~castbaltmv$year)
+abline(a)
+## close png device  ##
+dev.off()
